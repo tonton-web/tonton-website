@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - The Thought Archive</title>
+    <link rel="stylesheet" href="profilestyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <header class="profile-header">
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic">
+            <div class="profile-details">
+                <h2 id="profile-name">Ton Ton asdsdfdsfdsfsdfdsf</h2>
+                <div class="social-share-container">
+                    <div class="social-icons">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-square"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter-square"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram-square"></i>
+                        </a>
+                    </div>
+                    <button class="share-btn">Share Profile</button>
+                </div>
+            </div>
+        </div>
+        <button id="auth-btn" class="auth-btn">Login</button>
+    </header>
+
+    <main>
+        <div class="grid-container">
+            <div class="category" onclick="openCategory('Science')">
+                <img src="Science.png" alt="Science">
+                <span>Science</span>
+            </div>
+            <div class="category" onclick="openCategory('Futuristic')">
+                <img src="Futuristic.png" alt="Futuristic">
+                <span>Futuristic</span>
+            </div>
+            <div class="category" onclick="openCategory('History')">
+                <img src="History.png" alt="History">
+                <span>History</span>
+            </div>
+            <div class="category" onclick="openCategory('Philosophy')">
+                <img src="Philosophy.png" alt="Philosophy">
+                <span>Philosophy</span>
+            </div>
+            <div class="category" onclick="openCategory('Supernatural')">
+                <img src="Supernatural.png" alt="Supernatural">
+                <span>Supernatural</span>
+            </div>
+            <div class="category" onclick="openCategory('Entertainment')">
+                <img src="Entertainment.png" alt="Entertainment">
+                <span>Entertainment</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 The Thought Archive</p>
+    </footer>
+
+    <script src="thoughtsarchive.js"></script>
+</body>
+</html>

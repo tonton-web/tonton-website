@@ -1,0 +1,202 @@
+/* Base styles for the page, shared with other pages */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header, footer {
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* --- New Profile Header Styles --- */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.profile-details {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between the name, social icons, and share button */
+    align-items: flex-start; /* Aligns all content to the left */
+}
+/* Add styles for the Login/Logout button in the header */
+.auth-btn {
+    text-decoration: none;
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.auth-btn:hover {
+    background: #c82333;
+}
+
+#profile-name {
+    margin: 0;
+    font-size: 2em;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-link img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.social-link img:hover {
+    opacity: 1;
+}
+
+.share-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 1em;
+}
+
+.share-btn:hover {
+    background: #218838;
+}
+
+/* --- Posts Layout (similar to homepage) --- */
+main {
+    flex: 1;
+    padding: 30px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #555;
+    font-size: 1.5em;
+}
+
+.posts-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.entry {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* The rest of your existing entry styles can be copied here */
+}
+
+/* You can copy the styles for '.entry' from your 'categorystyle.css' file */
+
+
+/* --- New Styles for Category Grid --- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.category img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.category span {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* --- Font Awesome Icon Styles --- */
+.social-link i {
+    font-size: 36px; /* Adjust the size as needed */
+    color: #555;
+    transition: color 0.2s ease;
+    /* Add this line to fine-tune vertical alignment */
+    margin-top: -8px;
+}
+
+.social-link:hover i {
+    color: #007bff;
+}
+
+/* --- Styles to Align Social Icons and Share Button --- */
+.social-share-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* --- Styles to Make Share Button Smaller --- */
+.share-btn {
+    padding: 8px 16px; /* Reduced padding for a smaller size */
+    font-size: 0.9em;  /* Reduced font size */
+}
