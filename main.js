@@ -4,29 +4,17 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 // -------------------------------------------------------------
 
-let isDragging = false;
-let isResizing = false;
-let offsetX, offsetY;
-let initialWidth, initialHeight;
-let initialX, initialY;
-let currentSortBy = "newest";
-
-const MIN_WIDTH = 300;
-const MIN_HEIGHT = 300;
-const POSTS_TO_SHOW = 50;
-
-async function handleAuth() {
+// This function handles all UI updates for authentication
+async function updateAuthUI() {
     const { data: { session } } = await supabase.auth.getSession();
     const authBtn = document.getElementById("auth-btn");
     const profileBtn = document.getElementById("profile-btn");
     
-    // Check if the authBtn exists before trying to access it
     if (authBtn) {
         if (session) {
             authBtn.textContent = 'Logout';
             authBtn.onclick = async () => {
                 await supabase.auth.signOut();
-                window.location.reload();
             };
             if (profileBtn) {
                 profileBtn.style.display = 'block';
@@ -42,6 +30,17 @@ async function handleAuth() {
         }
     }
 }
+
+let isDragging = false;
+let isResizing = false;
+let offsetX, offsetY;
+let initialWidth, initialHeight;
+let initialX, initialY;
+let currentSortBy = "newest";
+
+const MIN_WIDTH = 300;
+const MIN_HEIGHT = 300;
+const POSTS_TO_SHOW = 50;
 
 async function displayEntries(sortBy = "newest") {
     const entryList = document.getElementById("entry-list");
@@ -103,14 +102,14 @@ function displayEntry(title, text, postId) {
 
     readMoreBtn.addEventListener('click', () => {
         postContent.innerHTML = text;
-        entryDiv.classList.add('expanded'); // <--- ADDED LINE
+        entryDiv.classList.add('expanded');
         readMoreBtn.style.display = 'none';
         collapseBtn.style.display = 'block';
     });
     
     collapseBtn.addEventListener('click', () => {
         postContent.innerHTML = truncatedText;
-        entryDiv.classList.remove('expanded'); // <--- ADDED LINE
+        entryDiv.classList.remove('expanded');
         readMoreBtn.style.display = 'block';
         collapseBtn.style.display = 'none';
     });
@@ -202,7 +201,7 @@ async function displayUserPosts() {
         .order('created_at', { ascending: false });
 
     if (error) {
-        console.error("Error fetching user posts:", error);
+        console.serror("Error fetching user posts:", error);
         return;
     }
 
@@ -289,35 +288,12 @@ function setupUIListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Listen for auth state changes and update the UI
+    // Call the function to set the initial UI state on page load
+    updateAuthUI();
+
+    // Listen for any future auth state changes
     supabase.auth.onAuthStateChange((event, session) => {
-        const authBtn = document.getElementById("auth-btn");
-        const profileBtn = document.getElementById("profile-btn");
-        
-        if (session) {
-            // User is logged in
-            if (authBtn) {
-                authBtn.textContent = 'Logout';
-                authBtn.onclick = async () => {
-                    await supabase.auth.signOut();
-                    // The onAuthStateChange listener will handle the UI update
-                };
-            }
-            if (profileBtn) {
-                profileBtn.style.display = 'block';
-            }
-        } else {
-            // User is logged out
-            if (authBtn) {
-                authBtn.textContent = 'Login';
-                authBtn.onclick = () => {
-                    window.location.href = 'login.html';
-                };
-            }
-            if (profileBtn) {
-                profileBtn.style.display = 'none';
-            }
-        }
+        updateAuthUI();
     });
 
     const sortBtn = document.getElementById("sort-btn");
@@ -354,10 +330,9 @@ document.addEventListener("DOMContentLoaded", () => {
         displayEntries(currentSortBy);
         
         if (addThoughtBtn) {
-            addThoughtBtn.addEventListener("click", () => {
-                // We're checking for a session to see if the user is logged in
-                const isLoggedIn = supabase.auth.getSession() !== null;
-                if (isLoggedIn) {
+            addThoughtBtn.addEventListener("click", async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
                     if (uploadSection) {
                         uploadSection.style.display = "flex";
                     }
@@ -375,7 +350,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const emailInput = document.getElementById('login-email');
             const passwordInput = document.getElementById('login-password');
             
-            // Check if the input elements exist before accessing their value
             if (emailInput && passwordInput) {
                 const email = emailInput.value;
                 const password = passwordInput.value;
@@ -400,10 +374,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.getElementById('register-password').value;
             const { error } = await supabase.auth.signUp({ 
                 email, 
-                password, 
+                password,
                 options: {
                     emailRedirectTo: 'https://tonton-web.github.io/index.html'
-                }
+                } 
             });
             
             if (error) {
@@ -433,34 +407,24 @@ document.addEventListener("DOMContentLoaded", () => {
         displayUserPosts();
     }
 
-    // --- NEW CODE FOR SORTING FUNCTIONALITY ---
     if (sortBtn && sortDropdown && sortOptions) {
-        // Toggle dropdown visibility on button click
         sortBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevents the window click event from firing immediately
+            e.stopPropagation();
             sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
         });
 
-        // Handle clicks on sort options
         sortOptions.forEach(option => {
             option.addEventListener('click', () => {
                 currentSortBy = option.getAttribute('data-sort');
                 displayEntries(currentSortBy);
-                sortDropdown.style.display = 'none'; // Hide dropdown after selection
+                sortDropdown.style.display = 'none';
             });
         });
 
-        // Hide dropdown if user clicks anywhere else on the page
         window.addEventListener('click', (e) => {
             if (!sortBtn.contains(e.target) && !sortDropdown.contains(e.target)) {
                 sortDropdown.style.display = 'none';
             }
         });
     }
-    // --- END OF NEW CODE ---
 });
-
-
-
-
-
