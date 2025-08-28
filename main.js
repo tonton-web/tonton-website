@@ -361,4 +361,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.pathname.endsWith('profile.html')) {
         displayUserPosts();
     }
+
+    // --- NEW CODE FOR SORTING FUNCTIONALITY ---
+    if (sortBtn && sortDropdown && sortOptions) {
+        // Toggle dropdown visibility on button click
+        sortBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the window click event from firing immediately
+            sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
+        });
+
+        // Handle clicks on sort options
+        sortOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                currentSortBy = option.getAttribute('data-sort');
+                displayEntries(currentSortBy);
+                sortDropdown.style.display = 'none'; // Hide dropdown after selection
+            });
+        });
+
+        // Hide dropdown if user clicks anywhere else on the page
+        window.addEventListener('click', (e) => {
+            if (!sortBtn.contains(e.target) && !sortDropdown.contains(e.target)) {
+                sortDropdown.style.display = 'none';
+            }
+        });
+    }
+    // --- END OF NEW CODE ---
 });
