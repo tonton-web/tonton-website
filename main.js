@@ -87,20 +87,40 @@ function displayEntry(title, text, postId) {
     const postContent = document.createElement("p");
     postContent.classList.add("post-content");
 
+    const truncatedText = text.substring(0, maxLength) + '...';
+    
+    // Set initial content
+    postContent.innerHTML = isLongPost ? truncatedText : text;
+
+    // Create buttons
     const readMoreBtn = document.createElement("button");
     readMoreBtn.textContent = "Read More";
     readMoreBtn.classList.add("read-more-btn");
     readMoreBtn.style.display = isLongPost ? 'block' : 'none';
 
-    if (isLongPost) {
-        postContent.innerHTML = text.substring(0, maxLength) + '...';
-        readMoreBtn.addEventListener('click', () => {
-            postContent.innerHTML = text;
-            readMoreBtn.style.display = 'none';
-        });
-    } else {
-        postContent.innerHTML = text;
-    }
+    const collapseBtn = document.createElement("button");
+    collapseBtn.textContent = "Collapse";
+    collapseBtn.classList.add("collapse-btn");
+    collapseBtn.style.display = 'none';
+
+    // Add event listeners
+    readMoreBtn.addEventListener('click', () => {
+        postContent.innerHTML = text; // Show full text
+        readMoreBtn.style.display = 'none';
+        collapseBtn.style.display = 'block';
+    });
+    
+    collapseBtn.addEventListener('click', () => {
+        postContent.innerHTML = truncatedText; // Show truncated text
+        readMoreBtn.style.display = 'block';
+        collapseBtn.style.display = 'none';
+    });
+
+    // Add elements to the entry container
+    entryDiv.innerHTML = `<h4>${title}</h4>`;
+    entryDiv.appendChild(postContent);
+    entryDiv.appendChild(readMoreBtn);
+    entryDiv.appendChild(collapseBtn);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
@@ -108,10 +128,6 @@ function displayEntry(title, text, postId) {
     deleteBtn.addEventListener("click", () => {
         deleteEntry(postId);
     });
-
-    entryDiv.innerHTML = `<h4>${title}</h4>`;
-    entryDiv.appendChild(postContent);
-    entryDiv.appendChild(readMoreBtn);
     entryDiv.appendChild(deleteBtn);
 
     entryList.appendChild(entryDiv);
@@ -410,4 +426,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // --- END OF NEW CODE ---
 });
+
 
