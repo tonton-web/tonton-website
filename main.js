@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 email, 
                 password,
                 options: {
-                    emailRedirectTo: 'https://tonton-web.github.io/index.html'
+                    emailRedirectTo: 'https://tonton-web.github.io/tonton-website/index.html'
                 } 
             });
             
@@ -428,3 +428,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
