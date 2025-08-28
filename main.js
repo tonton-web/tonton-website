@@ -289,7 +289,36 @@ function setupUIListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    handleAuth();
+    // Listen for auth state changes and update the UI
+    supabase.auth.onAuthStateChange((event, session) => {
+        const authBtn = document.getElementById("auth-btn");
+        const profileBtn = document.getElementById("profile-btn");
+        
+        if (session) {
+            // User is logged in
+            if (authBtn) {
+                authBtn.textContent = 'Logout';
+                authBtn.onclick = async () => {
+                    await supabase.auth.signOut();
+                    // The onAuthStateChange listener will handle the UI update
+                };
+            }
+            if (profileBtn) {
+                profileBtn.style.display = 'block';
+            }
+        } else {
+            // User is logged out
+            if (authBtn) {
+                authBtn.textContent = 'Login';
+                authBtn.onclick = () => {
+                    window.location.href = 'login.html';
+                };
+            }
+            if (profileBtn) {
+                profileBtn.style.display = 'none';
+            }
+        }
+    });
 
     const sortBtn = document.getElementById("sort-btn");
     const sortDropdown = document.getElementById("sort-dropdown");
@@ -424,6 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // --- END OF NEW CODE ---
 });
+
 
 
 
