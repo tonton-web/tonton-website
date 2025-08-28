@@ -398,7 +398,13 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
-            const { error } = await supabase.auth.signUp({ email, password });
+            const { error } = await supabase.auth.signUp({ 
+                email, 
+                password, 
+                options: {
+                    emailRedirectTo: 'https://tonton-web.github.io/index.html'
+                }
+            });
             
             if (error) {
                 alert(`Registration failed: ${error.message}`);
@@ -453,6 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // --- END OF NEW CODE ---
 });
+
 
 
 
