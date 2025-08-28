@@ -81,8 +81,26 @@ function displayEntry(title, text, postId) {
     const entryDiv = document.createElement("div");
     entryDiv.classList.add("entry");
 
-    const formattedText = text.replace(/\n/g, "<br>");
-    entryDiv.innerHTML = `<h4>${title}</h4><p>${formattedText}</p>`;
+    const maxLength = 200; // You can change this to your preferred length
+    const isLongPost = text.length > maxLength;
+
+    const postContent = document.createElement("p");
+    postContent.classList.add("post-content");
+
+    const readMoreBtn = document.createElement("button");
+    readMoreBtn.textContent = "Read More";
+    readMoreBtn.classList.add("read-more-btn");
+    readMoreBtn.style.display = isLongPost ? 'block' : 'none';
+
+    if (isLongPost) {
+        postContent.innerHTML = text.substring(0, maxLength) + '...';
+        readMoreBtn.addEventListener('click', () => {
+            postContent.innerHTML = text;
+            readMoreBtn.style.display = 'none';
+        });
+    } else {
+        postContent.innerHTML = text;
+    }
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
@@ -91,7 +109,11 @@ function displayEntry(title, text, postId) {
         deleteEntry(postId);
     });
 
+    entryDiv.innerHTML = `<h4>${title}</h4>`;
+    entryDiv.appendChild(postContent);
+    entryDiv.appendChild(readMoreBtn);
     entryDiv.appendChild(deleteBtn);
+
     entryList.appendChild(entryDiv);
 }
 
@@ -388,3 +410,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // --- END OF NEW CODE ---
 });
+
