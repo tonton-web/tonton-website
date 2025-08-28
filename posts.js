@@ -1,5 +1,3 @@
-import { supabase } from './supabaseClient.js';
-
 const POSTS_TO_SHOW = 50;
 
 export async function displayEntries(sortBy = "newest") {
@@ -142,4 +140,5 @@ export async function displayUserPosts() {
     } else {
         postsContainer.innerHTML = "<p>No posts found yet. Start sharing your thoughts!</p>";
     }
+
 }
