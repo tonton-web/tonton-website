@@ -1,7 +1,3 @@
-import { handleAuth } from './auth.js';
-import { displayEntries, addEntry, displayUserPosts } from './posts.js';
-import { setupUIListeners } from './ui.js';
-
 let currentSortBy = "newest";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -111,3 +107,4 @@ document.addEventListener("DOMContentLoaded", () => {
         displayUserPosts();
     }
 });
+
