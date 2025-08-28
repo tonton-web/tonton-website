@@ -15,29 +15,30 @@ const MIN_WIDTH = 300;
 const MIN_HEIGHT = 300;
 const POSTS_TO_SHOW = 50;
 
-// All your functions are placed below here
-
 async function handleAuth() {
     const { data: { session } } = await supabase.auth.getSession();
     const authBtn = document.getElementById("auth-btn");
     const profileBtn = document.getElementById("profile-btn");
     
-    if (session) {
-        authBtn.textContent = 'Logout';
-        authBtn.onclick = async () => {
-            await supabase.auth.signOut();
-            window.location.reload();
-        };
-        if (profileBtn) {
-            profileBtn.style.display = 'block';
-        }
-    } else {
-        authBtn.textContent = 'Login';
-        authBtn.onclick = () => {
-            window.location.href = 'login.html';
-        };
-        if (profileBtn) {
-            profileBtn.style.display = 'none';
+    // Check if the authBtn exists before trying to access it
+    if (authBtn) {
+        if (session) {
+            authBtn.textContent = 'Logout';
+            authBtn.onclick = async () => {
+                await supabase.auth.signOut();
+                window.location.reload();
+            };
+            if (profileBtn) {
+                profileBtn.style.display = 'block';
+            }
+        } else {
+            authBtn.textContent = 'Login';
+            authBtn.onclick = () => {
+                window.location.href = 'login.html';
+            };
+            if (profileBtn) {
+                profileBtn.style.display = 'none';
+            }
         }
     }
 }
@@ -289,9 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (addThoughtBtn) {
             addThoughtBtn.addEventListener("click", () => {
+                // We're checking for a session to see if the user is logged in
                 const isLoggedIn = supabase.auth.getSession() !== null;
                 if (isLoggedIn) {
-                    uploadSection.style.display = "flex";
+                    if (uploadSection) {
+                        uploadSection.style.display = "flex";
+                    }
                 } else {
                     alert("You must be logged in to add a thought.");
                     window.location.href = 'login.html';
@@ -303,15 +307,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
             
-            if (error) {
-                alert(`Login failed: ${error.message}`);
+            // Check if the input elements exist before accessing their value
+            if (emailInput && passwordInput) {
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                
+                if (error) {
+                    alert(`Login failed: ${error.message}`);
+                } else {
+                    alert("Login successful! Redirecting to homepage.");
+                    window.location.href = 'index.html';
+                }
             } else {
-                alert("Login successful! Redirecting to homepage.");
-                window.location.href = 'index.html';
+                console.error("Login form elements not found.");
             }
         });
     }
@@ -350,4 +362,3 @@ document.addEventListener("DOMContentLoaded", () => {
         displayUserPosts();
     }
 });
-
