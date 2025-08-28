@@ -1,6 +1,6 @@
 // --- CRITICAL: Replace with your Supabase URL and anon key ---
-const supabaseUrl = 'https://vambodsgqcdfjjveqqiq.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbWJvZHNncWNkZmpqdmVxcWlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNDc1MDEsImV4cCI6MjA3MTkyMzUwMX0.9jsF-L74ntI1FZVyLuy4hXMn4stz6X2dwRrogYX9Hwk';
+const supabaseUrl = 'YOUR_SUPABASE_URL';
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 // -------------------------------------------------------------
 
