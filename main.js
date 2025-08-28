@@ -4,10 +4,6 @@ import { setupUIListeners } from './ui.js';
 
 let currentSortBy = "newest";
 
-function openCategory(name) {
-    window.location.href = `categorypage.html?name=${encodeURIComponent(name)}`;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     // Authentication
     handleAuth();
@@ -25,6 +21,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // UI listeners
     setupUIListeners();
 
+    // NEW CODE TO HANDLE CATEGORY CLICKS
+    // This looks for any element with the 'data-category' attribute
+    const categoryElements = document.querySelectorAll('[data-category]');
+    categoryElements.forEach(element => {
+        element.addEventListener('click', () => {
+            const categoryName = element.getAttribute('data-category');
+            openCategory(categoryName);
+        });
+    });
+    
+    // The openCategory function is now here, inside the DOMContentLoaded block
+    function openCategory(name) {
+        window.location.href = `categorypage.html?name=${encodeURIComponent(name)}`;
+    }
+    // END OF NEW CODE
+
     // Check if we are on the category page
     const params = new URLSearchParams(window.location.search);
     const categoryName = params.get("name");
@@ -36,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         displayEntries(currentSortBy);
         
-        // This button now calls the new addEntry function from posts.js
         if (addThoughtBtn) {
             addThoughtBtn.addEventListener("click", () => {
                 const isLoggedIn = supabase.auth.getSession() !== null;
@@ -50,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // New forms handling with Supabase calls
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -101,8 +111,3 @@ document.addEventListener("DOMContentLoaded", () => {
         displayUserPosts();
     }
 });
-
-// Your other functions
-function openCategory(name) {
-    window.location.href = `categorypage.html?name=${encodeURIComponent(name)}`;
-}
