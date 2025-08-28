@@ -81,7 +81,7 @@ function displayEntry(title, text, postId) {
     const entryDiv = document.createElement("div");
     entryDiv.classList.add("entry");
 
-    const maxLength = 200; // You can change this to your preferred length
+    const maxLength = 200;
     const isLongPost = text.length > maxLength;
 
     const postContent = document.createElement("p");
@@ -89,10 +89,8 @@ function displayEntry(title, text, postId) {
 
     const truncatedText = text.substring(0, maxLength) + '...';
     
-    // Set initial content
     postContent.innerHTML = isLongPost ? truncatedText : text;
 
-    // Create buttons
     const readMoreBtn = document.createElement("button");
     readMoreBtn.textContent = "Read More";
     readMoreBtn.classList.add("read-more-btn");
@@ -103,20 +101,20 @@ function displayEntry(title, text, postId) {
     collapseBtn.classList.add("collapse-btn");
     collapseBtn.style.display = 'none';
 
-    // Add event listeners
     readMoreBtn.addEventListener('click', () => {
-        postContent.innerHTML = text; // Show full text
+        postContent.innerHTML = text;
+        entryDiv.classList.add('expanded'); // <--- ADDED LINE
         readMoreBtn.style.display = 'none';
         collapseBtn.style.display = 'block';
     });
     
     collapseBtn.addEventListener('click', () => {
-        postContent.innerHTML = truncatedText; // Show truncated text
+        postContent.innerHTML = truncatedText;
+        entryDiv.classList.remove('expanded'); // <--- ADDED LINE
         readMoreBtn.style.display = 'block';
         collapseBtn.style.display = 'none';
     });
 
-    // Add elements to the entry container
     entryDiv.innerHTML = `<h4>${title}</h4>`;
     entryDiv.appendChild(postContent);
     entryDiv.appendChild(readMoreBtn);
@@ -426,5 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // --- END OF NEW CODE ---
 });
+
 
 
