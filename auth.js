@@ -1,5 +1,3 @@
-import { supabase } from './supabaseClient.js';
-
 export async function handleAuth() {
     const { data: { session } } = await supabase.auth.getSession();
     const authBtn = document.getElementById("auth-btn");
@@ -25,4 +23,5 @@ export async function handleAuth() {
             profileBtn.style.display = 'none';
         }
     }
+
 }
