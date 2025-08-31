@@ -195,7 +195,7 @@ async function displayProfile() {
 
     const { data: profile, error } = await supabase
         .from('profiles')
-        .select('username')
+        .select('username, avatar_url')
         .eq('id', user.id)
         .single();
     
@@ -515,4 +515,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 
