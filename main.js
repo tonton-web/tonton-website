@@ -213,6 +213,48 @@ async function displayProfile() {
     }
 }
 
+async function uploadProfilePicture(event) {
+    const file = event.target.files[0];
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        alert("You must be logged in to upload a picture.");
+        return;
+    }
+
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${user.id}/${Date.now()}.${fileExtension}`;
+
+    const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file);
+
+    if (uploadError) {
+        console.error("Error uploading image:", uploadError);
+        alert("Failed to upload image. Please try again.");
+        return;
+    }
+
+    // Get the public URL for the uploaded file
+    const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+    // Update the profiles table with the new URL
+    const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+
+    if (updateError) {
+        console.error("Error updating profile URL:", updateError);
+        alert("Profile update failed.");
+    } else {
+        alert("Profile picture uploaded successfully!");
+        // Update the image on the page immediately
+        document.getElementById("profile-pic").src = publicUrl;
+    }
+}
+
 async function displayUserPosts() {
     const postsContainer = document.getElementById("user-posts-container");
     if (!postsContainer) return;
@@ -473,3 +515,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
