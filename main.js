@@ -184,6 +184,35 @@ async function deleteEntry(postId) {
     }
 }
 
+// === NEW: Function to display user profile info ===
+async function displayProfile() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        // Handle case where user is not logged in
+        document.getElementById("profile-name").textContent = "Please log in";
+        return;
+    }
+
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+    
+    if (error) {
+        console.error("Error fetching profile:", error);
+        // Fallback to displaying user's email if profile not found
+        document.getElementById("profile-name").textContent = user.email;
+        return;
+    }
+
+    if (profile && profile.username) {
+        document.getElementById("profile-name").textContent = profile.username;
+    } else {
+        document.getElementById("profile-name").textContent = "New User";
+    }
+}
+
 async function displayUserPosts() {
     const postsContainer = document.getElementById("user-posts-container");
     if (!postsContainer) return;
@@ -372,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
-            const { error } = await supabase.auth.signUp({ 
+            const { data, error } = await supabase.auth.signUp({ 
                 email, 
                 password,
                 options: {
@@ -383,6 +412,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (error) {
                 alert(`Registration failed: ${error.message}`);
             } else {
+                // === NEW: Add a row to the profiles table on successful registration ===
+                const { user } = data;
+                if (user) {
+                    const { profileError } = await supabase
+                        .from('profiles')
+                        .insert({ id: user.id, username: 'New User' });
+
+                    if (profileError) {
+                        console.error('Error creating profile:', profileError);
+                    }
+                }
+                // === END NEW CODE ===
+                
                 alert("Registration successful! Please check your email to confirm your account.");
                 window.location.href = 'login.html';
             }
@@ -403,9 +445,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // === UPDATED: Call both profile and posts functions on the profile page ===
     if (window.location.pathname.endsWith('profile.html')) {
+        displayProfile();
         displayUserPosts();
     }
+    // === END UPDATED CODE ===
 
     if (sortBtn && sortDropdown && sortOptions) {
         sortBtn.addEventListener('click', (e) => {
@@ -428,4 +473,3 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
