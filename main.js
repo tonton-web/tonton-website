@@ -211,6 +211,10 @@ async function displayProfile() {
     } else {
         document.getElementById("profile-name").textContent = "New User";
     }
+
+    if (profile.avatar_url) {
+        document.getElementById("profile-pic").src = profile.avatar_url;
+    }
 }
 
 async function uploadProfilePicture(event) {
@@ -515,5 +519,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 
 
