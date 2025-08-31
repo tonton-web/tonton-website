@@ -496,6 +496,11 @@ document.addEventListener("DOMContentLoaded", () => {
         displayProfile();
         displayUserPosts();
     }
+    const avatarInput = document.getElementById('avatar-input');
+    if (avatarInput) {
+        avatarInput.addEventListener('change', uploadProfilePicture);
+    }
+    
     // === END UPDATED CODE ===
 
     if (sortBtn && sortDropdown && sortOptions) {
@@ -519,6 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 
 
 
